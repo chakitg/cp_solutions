@@ -25,7 +25,7 @@ public:
         auto left = 1ul, right = S.length() - 1;
         while (left <= right) {
             const auto mid = left + (right - left) / 2;
-            if (!check(S, mid)) {
+            if (!check(S, mid)){
                 right = mid - 1;
             } else {
                 left = mid + 1;
