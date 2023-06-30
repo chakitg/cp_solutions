@@ -20,3 +20,18 @@
 // 1 ≤ |S| ≤ 105
 
 
+class Solution{
+public:	
+		
+	int isDivisible(string s){
+	    int cur = 1, sum = 0, n = s.size();
+	    if(s[n-1] == '1') sum++;
+	    
+	    for(int i = n-2; i >= 0; i--) {
+	        cur = (cur * 2) % 3;
+	        if(s[i] == '1') sum = (sum + cur) % 3;
+	    }
+	    return sum == 0;
+	}
+
+};
