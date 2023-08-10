@@ -50,3 +50,36 @@ public:
         return dp[s.size()];
     }
 };
+
+
+
+class Solution {
+public:
+    unordered_map<string,int>mp;
+    int n;
+
+    int solve(int i , string &s , vector<int> &dp) {
+        if(i >= n) {
+            return 1;
+        }
+        if(dp[i] != -1) return dp[i];
+        int ans = 0;
+        string t = "";
+        for(int j = i ; j < n ; j++) {
+            t += s[j];
+            if(mp.find(t) != mp.end()) {
+                ans |= solve(j+1,s,dp);
+            }
+        }
+        return dp[i] = ans;
+    }
+
+    bool wordBreak(string s, vector<string>& wordDict) {
+        for(auto x : wordDict) mp[x]++;
+        n = (int)s.size();
+        vector<int>dp(n+2,-1);
+
+        return solve(0,s,dp);
+        
+    }
+};
