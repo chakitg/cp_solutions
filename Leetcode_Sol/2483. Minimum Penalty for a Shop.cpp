@@ -76,3 +76,34 @@ public:
         return index;
     }
 };
+
+
+class Solution {
+public:
+    int bestClosingTime(string customers) {
+        int mx = 0;
+        int score = 0;
+        int n = (int)customers.size();
+        for(int i = 0 ; i < n ; i++) {
+            if(customers[i] == 'Y') {
+                score++;
+            } else {
+                score--;
+            }
+            mx = max(mx,score);
+        }
+        if(mx == 0) return 0;
+        score = 0;
+        for(int i = 0 ; i < n ; i++) {
+            if(customers[i] == 'Y') {
+                score++;
+            } else {
+                score--;
+            }
+            if(score == mx) {
+                return i+1;
+            }
+        }
+        return n;
+    }
+};
