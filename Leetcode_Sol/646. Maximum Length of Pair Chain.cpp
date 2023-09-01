@@ -60,3 +60,36 @@ public:
         return ans;
     }
 };
+
+
+_____________________________________________________
+
+
+class Solution {
+public:
+    int n;
+
+    int solve(int i, vector<vector<int>> &a , vector<int>&dp) {
+        if(i == n) {
+            return 0;
+        }
+
+        if(dp[i] != -1) return dp[i];
+
+
+        int ans = 0;
+
+        vector<int>b = {a[i][1]+1,INT_MIN};
+        int p = lower_bound(a.begin(),a.end(),b) - a.begin();
+        ans = max(ans, 1 + solve(p,a,dp));
+        ans = max(ans, solve(i+1,a,dp));
+        return dp[i] = ans;
+    }
+
+    int findLongestChain(vector<vector<int>>& a) {
+        sort(a.begin(),a.end());
+        n = (int)a.size();
+        vector<int>dp(n+2,-1);
+        return solve(0,a,dp);
+    }
+};
