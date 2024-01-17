@@ -42,3 +42,47 @@ public:
         return ok;
     }
 };
+
+
+____________________________________________________________________
+
+class Solution {
+public:
+    bool uniqueOccurrences(vector<int>& arr) {
+    // 🚀 Optimizing I/O operations for better performance
+    ios_base::sync_with_stdio(false);
+    cin.tie(0);
+    cout.tie(0);
+
+    // 📊 Vector to store the frequencies of each element
+    vector<int> freq;
+
+    // 🔄 Sorting the input array for easier frequency counting
+    sort(arr.begin(), arr.end());
+
+    // 📏 Counting the occurrences of each element in the sorted array
+    int count = 1;
+    for (int i = 1; i < arr.size(); i++) {
+        if (arr[i] == arr[i - 1]) {
+            count++;
+        } else {
+            freq.push_back(count);
+            count = 1;
+        }
+    }
+    freq.push_back(count);
+
+    // 🔍 Sorting the frequency vector for comparison
+    sort(freq.begin(), freq.end());
+
+    // 🔄 Checking for duplicates in the sorted frequency vector
+    int n = freq.size();
+    for (int i = 1; i < n; i++) {
+        if (freq[i] == freq[i - 1])
+            return false;
+    }
+
+    // ✅ If no duplicates found, return true
+    return true;
+}
+};
