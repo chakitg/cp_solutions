@@ -57,3 +57,28 @@ public:
         return false;
     }
 };
+
+
+
+
+
+// -----------------------------------------------------------------
+
+
+
+class Solution {
+public:
+    bool hasCycle(ListNode *head) {
+        if (!head||!head->next || !head->next->next) 
+            return 0;
+        ListNode *fast=head, *slow=head;
+        //int i=0;
+        while(fast && fast->next && fast->next->next){
+            fast=fast->next->next->next;
+            slow=slow->next->next;
+        //    cout<<++i<<",";
+            if (fast==slow) return 1;
+        }
+        return 0;
+    }
+};
