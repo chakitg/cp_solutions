@@ -1,0 +1,95 @@
+Given an array arr of lowercase strings, determine if the strings can be chained together to form a circle.
+A string X can be chained together with another string Y if the last character of X is the same as the first character of Y. If every string of the array can be chained with exactly two strings of the array(one with the first character and the second with the last character of the string), it will form a circle.
+
+For example, for the array arr[] = {"for", "geek", "rig", "kaf"} the answer will be Yes as the given strings can be chained as "for", "rig", "geek" and "kaf"
+
+Examples
+
+Input: arr[] = ["abc", "bcd", "cdf"]
+Output: 0
+Explaination: These strings can't form a circle because no string has 'd'at the starting index.
+Input: arr[] = ["ab" , "bc", "cd", "da"]
+Output: 1
+Explaination: These strings can form a circle of strings.
+Expected Time Complexity: O(n)
+Expected Auxiliary Space: O(n)
+
+Constraints: 
+1 ≤ length of strings ≤ 20
+
+
+
+class Solution {
+    void DFS(int node, vector<bool>& visited, vector<int> adj[]) {
+        visited[node] = true;
+
+        for (auto neighbour : adj[node]) {
+            if (!visited[neighbour]) {
+                DFS(neighbour, visited, adj);
+            }
+        }
+    }
+
+    bool isConnected(int V, vector<int> adj[]) {
+        int nonZeroDegreeNode = -1;
+
+        for (int i = 0; i < V; i++) {
+            if (adj[i].size() > 0) {
+                nonZeroDegreeNode = i;
+                break;
+            }
+        }
+
+        if (nonZeroDegreeNode == -1) {
+            // All nodes have degree 0, hence it's trivially connected
+            return true;
+        }
+
+        vector<bool> visited(V, false);
+
+        // Start DFS from nonZeroDegreeNode
+        DFS(nonZeroDegreeNode, visited, adj);
+
+        // Check if all nodes with non-zero degree are visited
+        for (int i = 0; i < V; i++) {
+            if (!visited[i] && adj[i].size() > 0) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+  public:
+    // TC : O(N)
+    // SC : O(N)
+    int isCircle(vector<string>& arr) {
+        int n = arr.size();
+        vector<int> adj[26];  // Adjacency list for 26 letters
+
+        vector<int> inDegree(26, 0), outDegree(26, 0);
+
+        // Build the adjacency list and calculate in/out degrees
+        for (int i = 0; i < n; i ++) {
+            int u = arr[i][0] - 'a';              // Start character
+            int v = arr[i].back() - 'a';          // End character
+
+            adj[u].push_back(v);  // Directed edge u -> v
+            outDegree[u] ++;
+            inDegree[v] ++;
+        }
+
+        // Step 1: Check if the graph is strongly connected
+        if (!isConnected(26, adj)) 
+            return false;
+
+        // Step 2: Check in-degree == out-degree for all vertices
+        for (int i = 0; i < 26; i++) {
+            if (inDegree[i] != outDegree[i]) {
+                return false;
+            }
+        }
+
+        return true;  // The graph has an Eulerian circuit
+    }
+};
